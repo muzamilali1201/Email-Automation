@@ -1,5 +1,5 @@
 const { dashboardController } = require("../controllers/dashboard.controller");
-const tokenverification = require("../middleware/tokenverification");
+const tokenverification = require("../middleware/token-verification");
 
 const router = require("express").Router();
 

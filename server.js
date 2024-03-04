@@ -3,7 +3,7 @@ require("dotenv").config();
 require("express-async-errors");
 const DbConnection = require("./config/DbConnection");
 const router = require("./routes/router");
-const errorHandler = require("./middleware/errorHandler");
+const errorHandler = require("./middleware/error-handler");
 const mailScheduler = require("./utils/mailScheduler");
 const app = express();
 

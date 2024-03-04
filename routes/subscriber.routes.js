@@ -2,7 +2,7 @@ const router = require("express").Router();
 const {
   subscriberController,
 } = require("../controllers/subscriber.controller");
-const tokenverification = require("../middleware/tokenverification");
+const tokenverification = require("../middleware/token-verification");
 
 router.post("/:listid", subscriberController.subscribeUser);
 router.get("/", [tokenverification], subscriberController.getAllSubscribers);

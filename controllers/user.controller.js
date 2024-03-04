@@ -89,17 +89,17 @@ const userController = {
   userLogin: async (req, res) => {
     const { email, password } = req.body;
     const userExist = await User.findOne({ email: email });
-    const passwordMatch = await bcrypt.compare(password, userExist.password);
+    if (!userExist) throw new customError(404, "User not found!");
+    const isValidPassword = await bcrypt.compare(password, userExist.password);
+    if (!isValidPassword) throw new customError(401, "Invalid credentiols");
     if (userExist.verified == "false")
       throw new customError(403, "User is not verified!");
-    if (!userExist) throw new customError(404, "Invalid Credentials");
     const token = jwt.sign({ userid: userExist._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
     return res
       .status(200)
-      .cookie("token", token)
-      .json({ message: "User login successfully!" });
+      .json({ message: "User login successfully!", token: token });
   },
 
   userVerify: async (req, res) => {

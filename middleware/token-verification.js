@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const tokenverification = async (req, res, next) => {
   let token = req.header("Authorization");
-  // console.log("In");
   if (!token) {
     throw new customError(403, "User is not login or auth header didn't set!");
   }

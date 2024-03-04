@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { ListController } = require("../controllers/list.controller");
-const tokenverification = require("../middleware/tokenverification");
+const tokenverification = require("../middleware/token-verification");
 
 router.post("/", [tokenverification], ListController.addList);
 router.get("/:listid", [tokenverification], ListController.selectList);

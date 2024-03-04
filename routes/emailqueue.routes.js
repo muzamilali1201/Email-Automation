@@ -2,7 +2,7 @@ const router = require("express").Router();
 const {
   EmailQueueController,
 } = require("../controllers/EmailQueue.controller");
-const tokenverification = require("../middleware/tokenverification");
+const tokenverification = require("../middleware/token-verification");
 
 router.post(
   "/createmail/:listid",
