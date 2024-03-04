@@ -90,10 +90,11 @@ const userController = {
     const { email, password } = req.body;
     const userExist = await User.findOne({ email: email });
     const passwordMatch = await bcrypt.compare(password, userExist.password);
+    if (userExist.verified == "false")
+      throw new customError(403, "User is not verified!");
     if (!userExist) throw new customError(404, "Invalid Credentials");
-
     const token = jwt.sign({ userid: userExist._id }, process.env.SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "1d",
     });
     return res
       .status(200)
@@ -110,7 +111,7 @@ const userController = {
     });
     if (!userWithToken) throw new customError(404, "User not exist");
     const recipient = {
-      mail: user.email,
+      email: user.email,
       subject: "Welcome to Our Platform!",
       message: `
             <!DOCTYPE html>
@@ -172,9 +173,10 @@ const userController = {
 
             `,
     };
+    // console.log(recipient);
+    emailSender(recipient);
     user.verified = true;
     await user.save();
-    emailSender(recipient);
     return res.status(200).json({ message: "User verified Successfully" });
   },
 };

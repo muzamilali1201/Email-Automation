@@ -2,12 +2,14 @@ const Subscriber = require("../models/Subscriber");
 const customError = require("../utils/error");
 const emailSender = require("../utils/nodemailer");
 const List = require("../models/List");
+const User = require("../models/User");
 
 const subscriberController = {
   subscribeUser: async (req, res) => {
     const { name, email } = req.body;
     const { listid } = req.params;
     const UserwithListId = await List.findOne({ _id: listid });
+    const Marketer = await User.findOne({ _id: UserwithListId.userid });
     if (!name || !email) {
       throw new customError(400, "All fields are required");
     }
@@ -22,7 +24,7 @@ const subscriberController = {
       listid: listid,
     });
     const recipient = {
-      mail: userSub.email,
+      email: newSubscriber.email,
       subject: "Subscription Acknowledment",
       message: `
           <!DOCTYPE html>
@@ -88,7 +90,7 @@ const subscriberController = {
     <div class="container">
         <h1>Welcome to Our Newsletter!</h1>
         <p>Dear ${name},</p>
-        <p>Thank you for subscribing to our newsletter! You have successfully subscribed "${listUser.listname}" list. We're thrilled to have you on board.</p>
+        <p>Thank you for subscribing to our newsletter! You have successfully subscribed "${UserwithListId.listname}" list. We're thrilled to have you on board.</p>
         <p>Here's what you can expect from our newsletter:</p>
         <ul>
             <li>Exciting updates about our products/services</li>
@@ -99,7 +101,7 @@ const subscriberController = {
         <p>Stay tuned for our upcoming emails!</p>
         <p style="text-align: center;"><a href="#" class="button">Explore Our Website</a></p>
         <p style="text-align: center;">Best regards,</p>
-        <p style="text-align: center;">${listUser.orgname} Team</p>
+        <p style="text-align: center;">${Marketer.organizationName} Team</p>
     </div>
 </body>
 </html>

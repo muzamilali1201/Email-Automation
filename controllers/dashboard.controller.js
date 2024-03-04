@@ -1,11 +1,11 @@
-const Sublist = require("../models/Sublist");
+const List = require("../models/List");
 const EmailQueue = require("../models/EmailQueue");
 const Subscriber = require("../models/Subscriber");
 
 const dashboardController = {
   mailTracker: async (req, res) => {
-    const userid = req.id;
-    const Lists = await Sublist.find({ userid: userid });
+    const userid = req.userid;
+    const Lists = await List.find({ userid: userid });
     const mails = await EmailQueue.find({ userid: userid }).select("-text");
     let MailTrackerList = [];
 

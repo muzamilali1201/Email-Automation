@@ -9,7 +9,6 @@ const ScheduledJob = async (email) => {
       console.log("Email is sending at : ", email.timetosend);
       const listid = email.listid;
       const subscriberList = await Subscriber.find({ listid: listid });
-      console.log(subscriberList);
       subscriberList.forEach(async (elem) => {
         const recipient = {
           email: elem.email,
