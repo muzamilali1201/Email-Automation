@@ -6,7 +6,6 @@ const emailSender = require("../utils/nodemailer");
 const ScheduledJob = async (email) => {
   if (email?.send == false) {
     node_schedule.scheduleJob(email?.timetosend, async () => {
-      console.log("Email is sending at : ", email.timetosend);
       const listid = email.listid;
       const subscriberList = await Subscriber.find({ listid: listid });
       subscriberList.forEach(async (elem) => {
